@@ -1,0 +1,64 @@
+﻿<div class="sign-in-popup">
+    <div class="row">
+        <div class="col-md-6 mb-30">
+            <h3>Sign In</h3>
+            @*<form action="">*@
+                <label for="sign-in-input">Username or email address <abbr class="required" title="required">*</abbr></label>
+                <input type="text" name="email" id="sign-in-input">
+
+                <label for="sign-in-password">Password <abbr class="required" title="required">*</abbr></label>
+                <input type="text" name="password" id="sign-in-password">
+
+                <input type="submit" name="sign-in" value="Sign In" class="btn btn-md btn-dark btn-button">
+
+                <a href="#" class="sign-in-popup__forgot-password">Forgot Password?</a>
+            @*</form>*@
+        </div>
+        <div class="col-md-6 mb-30">
+            <h3>Register</h3>
+            @*<form action="">*@
+                <label for="register-input">Email address <abbr class="required" title="required">*</abbr></label>
+                <input type="text" name="email" id="registerEmail">
+
+                <label for="password">Password <abbr class="required" title="required">*</abbr></label>
+                <input type="password" name="password" id="registerPassword">
+
+                <label for="confirmpassword">Confirm Password <abbr class="required" title="required">*</abbr></label>
+                <input type="password" name="confirmpassword" id="registerConfirm">
+
+                <input type="submit" id="btnRegister" name="register" value="Register" class="btn btn-md btn-dark btn-button">
+            @*</form>*@
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Close the bootstrap alert
+        $('#linkClose').click(function () {
+            $('#divError').hide('fade');
+        });
+
+        // Save the new user details
+        $('#btnRegister').click(function () {
+            $.ajax({
+                url: '/api/account/register',
+                method: 'POST',
+                data: {
+                    email: $('#registerEmail').val(),
+                    password: $('#registerPassword').val(),
+                    confirmPassword: $('#registerConfirm').val()
+                },
+                success: function () {
+                    //$('#successModal').modal('show');
+                },
+                error: function (jqXHR) {
+                    //$('#divErrorText').text(jqXHR.responseText);
+                    //$('#divError').show('fade');
+                    console.log(jqXHR.responseText);
+                }
+            });
+        });
+    });
+</script>
