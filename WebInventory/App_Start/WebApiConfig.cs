@@ -1,30 +1,43 @@
-﻿using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json.Serialization;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace WebInventory
 {
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config)
+        public static HttpConfiguration Register()
         {
-            var settings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            settings.Formatting = Newtonsoft.Json.Formatting.Indented;
-
-            // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            var config = new HttpConfiguration();
 
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "DefaultRouting",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            
+            // clear the supported mediatypes of the xml formatter
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(
+                new MediaTypeHeaderValue("application/json-patch+json"));
+            
+            // ... or ensure the json formatter accepts text/html
+
+            //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+
+            // results should come out
+            // - with indentation for readability
+            // - in camelCase
+
+            var json = config.Formatters.JsonFormatter;
+            json.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            return config;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DataAccess.Contracts;
 using System;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DataAccess.Repositories
@@ -47,8 +48,9 @@ namespace DataAccess.Repositories
         {
             try
             {
-                var existingProduct = _context.Products.FirstOrDefault(p => p.Id == e.Id);
-
+                var Id = Guid.Parse(e.Id.ToString().ToLower());
+                var existingProduct = _context.Products.FirstOrDefault(p => p.Id == Id);
+                Trace.WriteLine(Id);
                 if (existingProduct == null)
                 {
                     return new RepositoryActionResult<Product>(e, RepositoryActionStatus.NotFound);
@@ -82,7 +84,8 @@ namespace DataAccess.Repositories
         {
             try
             {
-                var exp = _context.Products.FirstOrDefault(e => e.Id == Id);
+                var id = Guid.Parse(Id.ToString().ToLower());
+                var exp = _context.Products.FirstOrDefault(e => e.Id == id);
                 if (exp != null)
                 {
                     _context.Products.Remove(exp);

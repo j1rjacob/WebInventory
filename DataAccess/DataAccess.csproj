@@ -56,6 +56,7 @@
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IProductRepository.cs" />
+    <Compile Include="Factories\ProductFactory.cs" />
     <Compile Include="Helpers\ListExtensions.cs" />
     <Compile Include="Persistence\ISafetyInventoryEntities.cs" />
     <Compile Include="ModelDB.Context.cs">
@@ -114,8 +115,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Factories\" />
+    <ProjectReference Include="..\DataAccess.DTO\DataAccess.DTO.csproj">
+      <Project>{bfe24ce8-595e-48ff-bf16-617bd8f95791}</Project>
+      <Name>DataAccess.DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
